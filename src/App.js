@@ -1,15 +1,15 @@
 import LoginForm from "./components/LoginForm";
-
-
+import { Navbar } from "./components/Navbar";
+import { Footer } from "./components/Footer";
 function App() {
   return (
     <div className="container">
       <div className="App d-flex flex-column min-vh-100">
-        <header>Header</header>
+        <Navbar />
         <main className="flex-grow-1">
           <LoginForm />
         </main>
-        <footer>Footer</footer>
+       <Footer />
       </div>
     </div>
   );
