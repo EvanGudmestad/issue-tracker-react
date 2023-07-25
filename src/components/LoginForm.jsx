@@ -1,20 +1,57 @@
 import {useState} from 'react';
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+import _ from 'lodash';
 
-
-function LoginForm() {
+function LoginForm({onLogin, showSuccess, showError}) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  //const [error, setError] = useState("");
+  //const [success, setSuccess] = useState("");
 
-  function onLogin(evt){
-    setError('');
-    setSuccess('');
-    if(email === 'admin@example.com' && password === 'password'){
-      setSuccess('Welcome!')
-    } else {
-      setError('Invalid email or password')
+  async function onSubmitLogin(evt){
+    //console.log(`email is ${email} and password is ${password}`);
+    try{
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/login`,
+      {
+        email,
+        password
+      });
+      const authPayload = jwt_decode(res.data.authToken);
+
+     console.log(authPayload);
+     const auth = {
+      email:email,
+      authToken: res.data.authToken,
+      payload: authPayload
+     }
+
+     //console.table(auth.payload);
+     //console.log(auth.payload.permissions.canAddComments);
+
+     showSuccess(`Welcome ${auth.email}`);
+
+     onLogin(auth);
+
+     // setError("");
+     // setSuccess(res.data.message);
+    }catch(err){
+      
+      const resError = err?.response?.data?.error;
+      
+      if(resError){
+        if(typeof resError==='string'){
+          showError(resError);
+        }else if(resError.details){
+          let joiError = '';
+          //joi validation
+          _.map(resError.details, (x) => joiError += (x.message + '\n'));
+          showError(joiError);
+        }
+      }
+
+      //console.log(resError);
     }
   }
 
@@ -73,15 +110,10 @@ function LoginForm() {
           </div>
 
           <div className="text-center text-lg-start mt-4 pt-2">
-            <button type="button" className="btn btn-primary btn-lg" id='btnLogin' onClick={(evt) => {onLogin()}}>Login</button>
+            <button type="button" className="btn btn-primary btn-lg" id='btnLogin' onClick={(evt) => {onSubmitLogin()}}>Login</button>
             <p className="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
                 className="link-danger">Register</a></p>
           </div>
-          <div className='row'>
-          <span className="text-danger">{error}</span>
-          <span className="text-success">{success}</span>
-          </div>
-
         </form>
       </div>
     </div>

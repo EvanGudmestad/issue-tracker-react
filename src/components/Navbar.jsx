@@ -1,6 +1,11 @@
 import { NavLink } from "react-router-dom"
 
-export function Navbar({auth}){
+export function Navbar({auth, onLogout, showSuccess}){
+
+  function onClickLogout(){
+    showSuccess('Logged out!');
+    onLogout();
+  }
     return(
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
@@ -13,9 +18,12 @@ export function Navbar({auth}){
               <li className="nav-item">
                 <NavLink to="/" className='nav-link'>Home</NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink to="/walker/list" className='nav-link'>Bug List</NavLink>
-              </li>
+              {auth &&
+                <li className="nav-item">
+                <NavLink to="/bug/list" className='nav-link'>Bug List</NavLink>
+                </li>
+              }
+             
              </ul>
             <ul className='navbar-nav'>
               {!auth && 
@@ -29,7 +37,7 @@ export function Navbar({auth}){
                   <NavLink to="#" className='nav-link'> {auth.email}</NavLink>
                 </li>
                 <li className='nav-item'>
-                  {/* <NavLink className='nav-link' to='/' onClick={(evt) => onClickLogout(evt)} >Logout</NavLink> */}
+                  <NavLink className='nav-link' to='/' onClick={(evt) => onClickLogout(evt)} >Logout</NavLink>
                 </li>
                 </> 
               }
