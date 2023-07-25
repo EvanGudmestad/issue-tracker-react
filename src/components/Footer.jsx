@@ -1,7 +1,9 @@
+import { FaLinkedin, FaFacebook, FaTwitter, FaGoogle } from "react-icons/fa";
+
 export function Footer(){
     return(
         <div
-        className="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-primary sticky-bottom">
+        className="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-primary">
         {/* Copyright */}
         <div className="text-white mb-3 mb-md-0">
           Copyright © 2023. All rights reserved.
@@ -10,17 +12,17 @@ export function Footer(){
     
         {/* Right */}
         <div>
-          <a href="#!" className="text-white me-4">
-            <i className="fab fa-facebook-f"></i>
+          <a href="http://www.facebook.com" className="text-white me-4" target="_blank" rel='noreferrer'>
+          <FaFacebook />
           </a>
-          <a href="#!" className="text-white me-4">
-            <i className="fab fa-twitter"></i>
+          <a href="http://www.twitter.com" className="text-white me-4" target="_blank" rel='noreferrer'>
+           <FaTwitter />
           </a>
-          <a href="#!" className="text-white me-4">
-            <i className="fab fa-google"></i>
+          <a href="http://www.google.com" className="text-white me-4" target="_blank" rel='noreferrer'>
+           <FaGoogle />
           </a>
-          <a href="#!" className="text-white">
-            <i className="fab fa-linkedin-in"></i>
+          <a href="http://www.linkedin.com" className="text-white" target="_blank" rel='noreferrer'>
+           <FaLinkedin />
           </a>
         </div>
         {/* Right */}

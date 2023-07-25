@@ -6,6 +6,9 @@ import { useState,useEffect } from "react";
 import { useNavigate, Route,Routes } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.min.css';
+import { RegisterForm } from "./components/RegisterForm";
+import jwt_decode from 'jwt-decode';
+import { BugEditor } from "./components/BugEditor";
 
 
 function App() {
@@ -13,8 +16,33 @@ function App() {
   const [auth,setAuth] = useState(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if(localStorage){
+      const storedAuthToken = localStorage.getItem('authToken');
+      if(storedAuthToken){
+        const authPayload = jwt_decode(storedAuthToken);
+        //console.log(authPayload);
+        if(authPayload){
+          const auth = {
+            token:storedAuthToken,
+            payload:authPayload,
+            email: authPayload.email,
+            userId: authPayload._id
+          };
+         // console.log(auth.token);
+          setAuth(auth);
+        }
+      }
+    }
+  }, [])
+
   function onLogin(auth){
     setAuth(auth);
+
+    if(localStorage){
+      localStorage.setItem('authToken', auth.token)
+    }
+
     navigate('/bug/list');
   }
 
@@ -38,6 +66,8 @@ function App() {
           <Routes>
             <Route path='/' element={<LoginForm onLogin={onLogin} showError={showError} showSuccess={showSuccess} />} />
             <Route path="/bug/list" element={<BugList auth={auth} />} />
+            <Route path='/user/register' element={<RegisterForm showSuccess={showSuccess} onLogin={onLogin} showError={showError} />} />
+            <Route path='/bug/:bugId' element={<BugEditor auth={auth} />} />
           </Routes>
         </main>
        <Footer />

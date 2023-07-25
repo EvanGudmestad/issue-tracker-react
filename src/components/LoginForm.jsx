@@ -2,6 +2,8 @@ import {useState} from 'react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import _ from 'lodash';
+import { Link } from 'react-router-dom';
+
 
 function LoginForm({onLogin, showSuccess, showError}) {
 
@@ -9,6 +11,12 @@ function LoginForm({onLogin, showSuccess, showError}) {
   const [password, setPassword] = useState("");
   //const [error, setError] = useState("");
   //const [success, setSuccess] = useState("");
+
+  const emailError = !email ? 'Email can not be left blank' : 
+  !email.includes('@') ? 'Email must include @ sign' : '';
+
+  const passwordError = !password ? 'Password can not be left blank' : 
+  password.length < 8 ? 'Password must be at least 8 characters' : '';
 
   async function onSubmitLogin(evt){
     //console.log(`email is ${email} and password is ${password}`);
@@ -23,7 +31,7 @@ function LoginForm({onLogin, showSuccess, showError}) {
      console.log(authPayload);
      const auth = {
       email:email,
-      authToken: res.data.authToken,
+      token: res.data.authToken,
       payload: authPayload
      }
 
@@ -60,7 +68,7 @@ function LoginForm({onLogin, showSuccess, showError}) {
   <div className="container-fluid h-custom">
     <div className="row d-flex justify-content-center align-items-center h-100">
       <div className="col-md-9 col-lg-6 col-xl-5">
-        <img src={process.env.PUBLIC_URL + 'logoBug.png'}
+        <img src={process.env.PUBLIC_URL + '/logoBug.png'}
           className="img-fluid" alt="Sample"/>
       </div>
       <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
@@ -106,14 +114,15 @@ function LoginForm({onLogin, showSuccess, showError}) {
                 Remember me
               </label>
             </div>
-            <a href="#!" className="text-body">Forgot password?</a>
           </div>
 
-          <div className="text-center text-lg-start mt-4 pt-2">
+          <div className="text-center text-lg-start mt-4 pt-2 mb-3">
             <button type="button" className="btn btn-primary btn-lg" id='btnLogin' onClick={(evt) => {onSubmitLogin()}}>Login</button>
-            <p className="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
-                className="link-danger">Register</a></p>
+            <p className="small fw-bold mt-2 pt-1 mb-0">Don't have an account? 
+            <Link to="/user/register" className="link-danger ms-3">Register</Link></p>
           </div>
+          {emailError && <p className='text-danger'>{emailError}</p>}
+          {passwordError && <p className='text-danger'>{passwordError}</p>}
         </form>
       </div>
     </div>

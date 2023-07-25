@@ -10,7 +10,7 @@ export function BugList({auth}) {
 
     useEffect(() =>{
        axios(`${process.env.REACT_APP_API_URL}/api/bugs/list`,{
-        headers:{authorization: `Bearer ${auth?.authToken}`}
+        headers:{authorization: `Bearer ${auth?.token}`}
        })
        .then((res) =>{
         //console.log(res.data);
@@ -72,6 +72,7 @@ export function BugList({auth}) {
             <th scope="col">#</th>
             <th scope="col">Title</th>
             <th scope="col">Classification</th>
+            <th scope="col">Created</th>
             <th scope="col">Closed</th>
           </tr>
         </thead>
