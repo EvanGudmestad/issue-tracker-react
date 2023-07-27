@@ -17,7 +17,18 @@ export function BugList({auth}) {
         setBugs(res.data);
        }) 
        .catch((err) =>{
-        console.log(err);
+        const resError = err?.response?.data?.error;
+        
+                if(resError){
+                if(typeof resError==='string'){
+                  //  showError(resError);
+                }else if(resError.details){
+                    let joiError = '';
+                    //joi validation
+                    _.map(resError.details, (x) => joiError += (x.message + '\n'));
+                    //showError(joiError);
+                }
+                }
        });
     },[auth]);
 

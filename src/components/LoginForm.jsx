@@ -28,7 +28,7 @@ function LoginForm({onLogin, showSuccess, showError}) {
       });
       const authPayload = jwt_decode(res.data.authToken);
 
-     console.log(authPayload);
+     //console.log(authPayload);
      const auth = {
       email:email,
       token: res.data.authToken,

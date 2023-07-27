@@ -1,11 +1,13 @@
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react";
 import axios from 'axios';
+import _ from 'lodash';
 
-export function BugEditor({auth}){
+export function BugEditor({auth, showSuccess, showError}){
     
   
     const {bugId} = useParams();
+    const navigate = useNavigate();
 
     const [bug,setBug] = useState({title:'',description:'',stepsToReproduce:'',classification:''});
 
@@ -18,9 +20,24 @@ export function BugEditor({auth}){
         }).then((res) =>{
            setBug(res.data);
         }).catch((err) =>{
-            console.log(err);
+           // console.log(err);
+            
+            const resError = err?.response?.data?.error;
+      
+            if(resError){
+              if(typeof resError==='string'){
+                showError(resError);
+              }else if(resError.details){
+                let joiError = '';
+                //joi validation
+                _.map(resError.details, (x) => joiError += (x.message + '\n'));
+                showError(joiError);
+              }
+            }
         });
     },[bugId,auth])
+
+    const initBugClassification = bug?.classification || 'nothing'
 
     function editTitle(evt){
         const newTitle = evt.target.value;
@@ -47,6 +64,7 @@ export function BugEditor({auth}){
     }
 
     const editClassification = (evt) => {
+       // console.log('classification change called');
         const newClassification = evt.target.value;
         setBug((prevBug) => ({
             ...prevBug,
@@ -65,7 +83,9 @@ export function BugEditor({auth}){
                 stepsToReproduce: bug.stepsToReproduce,
                 description: bug.description
             },{headers: {authorization: `Bearer ${auth?.token}`}});
-            console.log(res.data);
+            //console.log(res.data);
+            navigate('/bug/list');
+            showSuccess(`Bug Saved!`);
         }catch(err){
             console.log(err);
         }
@@ -93,9 +113,16 @@ export function BugEditor({auth}){
               placeholder="Steps to Reproduce" onChange={(evt) => editSteps(evt)} value={bug?.stepsToReproduce}/>
           </div>
           <div className="form-outline mb-4">
-            <label className="form-label" htmlFor="classifyInput">Classification</label>
+          <select value={initBugClassification} className="form-select" aria-label="Default select example" onChange={(evt) => editClassification(evt)}>
+                <option>Open this select menu</option>
+                <option value="approved">Approved</option>
+                <option value="unapproved">Unapproved</option>
+                <option value="duplicate">Duplicate</option>
+                <option value="unclassified">Unclassified</option>
+            </select>
+            {/* <label className="form-label" htmlFor="classifyInput">Classification</label>
             <input type="text" id="classifyInput" className="form-control"
-              placeholder="Classification" onChange={(evt) => editClassification(evt)} value={bug?.classification}/>
+              placeholder="Classification" onChange={(evt) => editClassification(evt)} value={bug?.classification}/> */}
           </div>
           <div className="col-md-10"></div>
           <div className="col-md-2">

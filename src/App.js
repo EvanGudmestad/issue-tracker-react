@@ -9,6 +9,8 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import { RegisterForm } from "./components/RegisterForm";
 import jwt_decode from 'jwt-decode';
 import { BugEditor } from "./components/BugEditor";
+import { UserList } from "./components/UserList";
+import { UserEditor } from "./components/UserEditor";
 
 
 function App() {
@@ -67,7 +69,9 @@ function App() {
             <Route path='/' element={<LoginForm onLogin={onLogin} showError={showError} showSuccess={showSuccess} />} />
             <Route path="/bug/list" element={<BugList auth={auth} />} />
             <Route path='/user/register' element={<RegisterForm showSuccess={showSuccess} onLogin={onLogin} showError={showError} />} />
-            <Route path='/bug/:bugId' element={<BugEditor auth={auth} />} />
+            <Route path='/bug/:bugId' element={<BugEditor auth={auth} showSuccess={showSuccess} showError={showError} />} />
+            <Route path='/user/list' element={<UserList auth={auth} showError={showError} />} />
+            <Route path='/user/:userId' element={<UserEditor auth={auth} showError={showError} />}  />
           </Routes>
         </main>
        <Footer />
