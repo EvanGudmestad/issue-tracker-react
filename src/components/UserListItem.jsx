@@ -2,7 +2,7 @@ import _ from 'lodash';
 import moment from "moment/moment";
 import { Link } from 'react-router-dom';
 
-export function UserListItem({user}){
+export function UserListItem({user, auth}){
     return(
         <div className="col-md-3 mb-3">
             <div className="card" style={{width: '18rem'}}>
@@ -15,7 +15,7 @@ export function UserListItem({user}){
                     {Array.isArray(user.role) && _.map(user.role, (role, index) => (<p className='badge bg-primary ms-2' key={index}>{role}</p>))}
                     {user.role === null && <p className='badge bg-danger'>No Roles Assigned</p>}
                     <br />
-                    <Link to={`/user/${user._id}`} className="btn btn-warning">Edit User</Link>
+                   {auth.payload.permissions.canEditAnyUser && <Link to={`/user/${user._id}`} className="btn btn-warning">Edit User</Link>}
                 </div>
                 <div className="card-footer text-body-secondary">
                   <p>User Created {moment(user.createdOn).fromNow()}</p> 

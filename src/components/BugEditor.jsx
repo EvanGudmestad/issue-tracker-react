@@ -87,7 +87,18 @@ export function BugEditor({auth, showSuccess, showError}){
             navigate('/bug/list');
             showSuccess(`Bug Saved!`);
         }catch(err){
-            console.log(err);
+          const resError = err?.response?.data?.error;
+      
+          if(resError){
+            if(typeof resError==='string'){
+              showError(resError);
+            }else if(resError.details){
+              let joiError = '';
+              //joi validation
+              _.map(resError.details, (x) => joiError += (x.message + '\n'));
+              showError(joiError);
+            }
+          }
         }
     }
 

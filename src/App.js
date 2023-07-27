@@ -11,6 +11,7 @@ import jwt_decode from 'jwt-decode';
 import { BugEditor } from "./components/BugEditor";
 import { UserList } from "./components/UserList";
 import { UserEditor } from "./components/UserEditor";
+import { NotFound } from "./components/NotFound";
 
 
 function App() {
@@ -71,7 +72,8 @@ function App() {
             <Route path='/user/register' element={<RegisterForm showSuccess={showSuccess} onLogin={onLogin} showError={showError} />} />
             <Route path='/bug/:bugId' element={<BugEditor auth={auth} showSuccess={showSuccess} showError={showError} />} />
             <Route path='/user/list' element={<UserList auth={auth} showError={showError} />} />
-            <Route path='/user/:userId' element={<UserEditor auth={auth} showError={showError} />}  />
+            <Route path='/user/:userId' element={<UserEditor auth={auth} showError={showError} showSuccess={showSuccess} />}  />
+            <Route path='*' element={<NotFound />} />
           </Routes>
         </main>
        <Footer />
