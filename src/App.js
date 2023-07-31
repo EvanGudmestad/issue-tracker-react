@@ -20,6 +20,7 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log('use effect running in app js')
     if(localStorage){
       const storedAuthToken = localStorage.getItem('authToken');
       if(storedAuthToken){
@@ -32,7 +33,7 @@ function App() {
             email: authPayload.email,
             userId: authPayload._id
           };
-         // console.log(auth.token);
+         console.log(`Auth token in use effect in app js: ${auth.token}`);
           setAuth(auth);
         }
       }
