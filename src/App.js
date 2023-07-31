@@ -5,6 +5,7 @@ import {BugList} from './components/BugList';
 import { useState,useEffect } from "react";
 import { useNavigate, Route,Routes } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import './App.scss';
 import 'react-toastify/dist/ReactToastify.min.css';
 import { RegisterForm } from "./components/RegisterForm";
 import jwt_decode from 'jwt-decode';
@@ -12,6 +13,7 @@ import { BugEditor } from "./components/BugEditor";
 import { UserList } from "./components/UserList";
 import { UserEditor } from "./components/UserEditor";
 import { NotFound } from "./components/NotFound";
+import { ReportBug } from "./components/ReportBug";
 
 
 function App() {
@@ -20,7 +22,6 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('use effect running in app js')
     if(localStorage){
       const storedAuthToken = localStorage.getItem('authToken');
       if(storedAuthToken){
@@ -33,7 +34,6 @@ function App() {
             email: authPayload.email,
             userId: authPayload._id
           };
-         console.log(`Auth token in use effect in app js: ${auth.token}`);
           setAuth(auth);
         }
       }
@@ -52,6 +52,7 @@ function App() {
 
   function onLogout(){
     setAuth(null);
+    localStorage.removeItem('authToken');
   }
 
   function showError(message) {
@@ -70,6 +71,7 @@ function App() {
           <Routes>
             <Route path='/' element={<LoginForm onLogin={onLogin} showError={showError} showSuccess={showSuccess} />} />
             <Route path="/bug/list" element={<BugList auth={auth} />} />
+            <Route path="/bug/report" element={<ReportBug auth={auth} showError={showError} showSuccess={showSuccess} />} />
             <Route path='/user/register' element={<RegisterForm showSuccess={showSuccess} onLogin={onLogin} showError={showError} />} />
             <Route path='/bug/:bugId' element={<BugEditor auth={auth} showSuccess={showSuccess} showError={showError} />} />
             <Route path='/user/list' element={<UserList auth={auth} showError={showError} />} />

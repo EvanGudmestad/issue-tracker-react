@@ -24,6 +24,9 @@ export function Navbar({auth, onLogout, showSuccess}){
                     <NavLink to="/bug/list" className='nav-link'>Bug List</NavLink>
                   </li>
                   <li className="nav-item">
+                    <NavLink to="/bug/report" className='nav-link'>Report New Bug</NavLink>
+                  </li>
+                  <li className="nav-item">
                     <NavLink to="/user/list" className='nav-link'>User List</NavLink>
                   </li>
                 </>
