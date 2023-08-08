@@ -12,8 +12,8 @@ export function UserListItem({user, auth}){
                     <h6 className='card-subtitle mb-2 text-body-secondary'>{user.email}</h6>
                     {/* <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> */}
                     {typeof user.role === 'string' && <p className='badge bg-primary'>{user.role}</p>}
-                    {Array.isArray(user.role) && _.map(user.role, (role, index) => (<p className='badge bg-primary ms-2' key={index}>{role}</p>))}
-                    {user.role === null && <p className='badge bg-danger'>No Roles Assigned</p>}
+                    {Array.isArray(user.role) && user?.role?.length > 0 && _.map(user.role, (role, index) => (<p className='badge bg-primary ms-2' key={index}>{role}</p>))}
+                    {user?.role?.length === 0 && <p className='badge bg-danger'>No Roles Assigned</p>}
                     <br />
                    {auth.payload.permissions.canEditAnyUser && <Link to={`/user/${user._id}`} className="btn btn-warning">Edit User</Link>}
                 </div>

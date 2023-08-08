@@ -85,6 +85,7 @@ export function BugList({auth}) {
           </select>
         </div>
         <div className='col'>
+          
           <label htmlFor="txtMinAge" className='form-label'>Minimum Age</label>
           <input type="number" name="txtMinAge" id="txtMinAge" className='form-control' onChange={(evt) => setMinAge(evt.target.value)} />
         </div>
